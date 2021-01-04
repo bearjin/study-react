@@ -203,3 +203,62 @@ class App extends Component {
   {this.state.subject.sub}
 </header>
 ```
+
+### 컴포넌트 이벤트 만들기
+내가 만든 컴포넌트에 새로운 이벤트를 만들어 사용할 수 있습니다. 
+```
+<Subject 
+  title={this.state.subject.title} 
+  sub={this.state.subject.sub}
+  onChangePage={function () {
+    this.setState({ mode : 'welcome'});  
+  }.bind(this)}
+  >
+</Subject>
+
+class Subject extends Component {
+  render() {
+    return (
+      <header>
+          <h1><a href="/" onClick={function (e) {
+            e.preventDefault();
+            this.props.onChangePage();
+          }.bind(this)}>{this.props.title}</a></h1>
+          {this.props.sub}
+      </header>
+    );
+  }
+}
+```
+```
+<TOC 
+  onChangePage={function(id){
+    this.setState({mode : 'read', selected_content_id: Number(id)})
+  }.bind(this)} 
+data={this.state.contents}></TOC>
+
+class TOC extends Component {
+  render (){
+      var lists = [];
+      var data = this.props.data;
+      var i = 0;
+      while(i < data.length){
+          lists.push(
+            <li key={data[i].id}>
+              <a href={"/content/" + data[i].id} data-id={data[i].id} onClick={function(e){
+                e.preventDefault();
+                this.props.onChangePage(e.target.dataset.id);
+              }.bind(this)}>{data[i].title}</a>
+            </li>)
+          i = i + 1;
+      }
+    return (
+      <nav>
+        <ul>
+          {lists}
+        </ul>
+      </nav>
+    );
+  }
+}
+```
