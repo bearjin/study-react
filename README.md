@@ -262,3 +262,29 @@ class TOC extends Component {
   }
 }
 ```
+
+### CRUD(create, read, update, delete) - create
+shouldComponentUpdate 는 render 이전에 실행이 되고 newProps, newState라는 2가지 매개변수를 가집니다. return 값이 false 일 경우 render를 실행하지 않고 true일 경우에만 render를 실행합니다. 새로운 값을 추가 할 때 push는 원본을 바로 수정하지만 concat은 원본을 수정하지 않고 새로운 값이 추가 된 배열 혹은 객체를 리턴해 줍니다. shouldComponentUpdate 와 concat을 이용하여 값이 변했을 때만 render가 실행 되도록 하여 성능을 향상 시킬 수 있습니다.
+```
+_article = <CreateContent onSubmit={function(_title, _desc){
+  this.max_content_id = this.max_content_id + 1;
+  // this.state.contents.push(
+  //   {id: this.max_content_id, title: _title, desc: _desc}
+  // )
+  var newContents = this.state.contents.concat(
+    {id: this.max_content_id, title: _title, desc: _desc}
+  )
+  this.setState({
+    contents : newContents
+  })
+}.bind(this)}></CreateContent>
+``` 
+```
+shouldComponentUpdate(newProps, newState) {
+  console.log('===> render shouldComponentUpdate', newProps.data, this.props.data);
+  if (this.props.data === newProps.data) {
+    return false;
+  }
+  return true;
+}
+```
