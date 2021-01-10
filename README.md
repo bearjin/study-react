@@ -336,3 +336,36 @@ _content = this.getReadContent();
 }
 return _article;
 ```
+
+### CRUD(create, read, update, delete) - delete
+리액트에서 confirm()은 앞에 window를 붙여 줘야 합니다. 값을 삭제할 때는 splice()를 쓰고 첫번째 인자값으로 삭제할 값의 인덱스, 두번째 인자값으로 몇개의 값을 삭제 할지를 받습니다.
+```
+<Control onChageMode={function (_mode) {
+  if (_mode === 'delete') {
+    if (window.confirm('really?')) {
+      var _content = Array.from(this.state.contents);
+      var i = 0;
+      while (i < _content.length) {
+        if (_content[i].id === this.state.selected_content_id) {
+          _content.splice(i, 1);
+          break
+        }
+        i = i + 1;
+      }
+    }
+  }
+  this.setState({
+    contents: _content,
+    mode: 'welcome'
+  });
+  alert('deleted!');
+}.bind(this)}></Control>
+```
+
+### 추가 공부하면 좋은 것들
+- [immutable=js](https://immutable-js.github.io/immutable-js/)
+- [react router](https://reactrouter.com/)
+- create-react-app + npm run eject
+- redux
+- react server side rendering
+- react native

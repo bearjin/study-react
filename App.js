@@ -12,7 +12,7 @@ class App extends Component {
     super(props);
     this.max_content_id = 3;
     this.state = {
-      mode: 'create',
+      mode: 'welcome',
       selected_content_id: 2,
       subject: { title: 'WEB', sub: 'World Wide Web!' },
       welcome: { title: 'Welcome', desc: 'Hello React!' },
@@ -108,9 +108,24 @@ class App extends Component {
           }.bind(this)}
           data={this.state.contents}></TOC>
         <Control onChageMode={function (_mode) {
+          if (_mode === 'delete') {
+            if (window.confirm('really?')) {
+              var _content = Array.from(this.state.contents);
+              var i = 0;
+              while (i < _content.length) {
+                if (_content[i].id === this.state.selected_content_id) {
+                  _content.splice(i, 1);
+                  break
+                }
+                i = i + 1;
+              }
+            }
+          }
           this.setState({
-            mode: _mode
-          })
+            contents: _content,
+            mode: 'welcome'
+          });
+          alert('deleted!');
         }.bind(this)}></Control>
         {this.getContent()}
       </div>
