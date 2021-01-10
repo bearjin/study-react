@@ -288,3 +288,51 @@ shouldComponentUpdate(newProps, newState) {
   return true;
 }
 ```
+
+### Immutable
+Immutable(불변성) 데이터의 원본을 훼손되는것을 막는것. Immutable.js
+```
+// 배열복제
+var newContents = Array.from(this.state.contents);
+newContents.push({id: this.max_content_id, title: _title, desc: _desc});
+
+// 객체복제
+var newContents = Object.assign({}, this.state.contents);
+newContents.push({id: this.max_content_id, title: _title, desc: _desc});
+```
+
+### CRUD(create, read, update, delete) - update
+input에 값을 가져오는 경우 props는 read-only이기 때문에 state를 이용하여 props 값을 받아와 value값에 적용하고 변경된 값은 onChange 이벤트를 통해 setState을 실행하여 변경해 줍니다. Array.from 으로 배열을 복제하여 contents 값을 새로 변경한 값으로 변경해 업데이트를 적용해 줍니다.
+```
+<input type="hidden" name="id" value={this.state.id}></input>
+  <p><input type="text" name="title" placeholder="title"
+    value={this.state.title}
+    onChange={this.inputFormHandler}
+  ></input></p>
+  <p><textarea name="desc" placeholder="description"
+    value={this.state.desc}
+    onChange={this.inputFormHandler}
+  ></textarea></p>
+  <p><input type="submit"></input></p>
+```
+```
+_content = this.getReadContent();
+  _article = <UpdateContent data={_content} onSubmit={function (_id, _title, _desc) {
+    var newContents = Array.from(this.state.contents);
+    var i = 0;
+    while (i < newContents.length) {
+      if (newContents[i].id === _id) {
+        newContents[i] = { id: _id, title: _title, desc: _desc };
+        break;
+      }
+      i = i + 1;
+    }
+
+    this.setState({
+      contents: newContents,
+      mode: 'read'
+    })
+  }.bind(this)}></UpdateContent>
+}
+return _article;
+```
